@@ -1,10 +1,3 @@
-#/// API calling function
- 
-from flask_restful import Resource, Api
-from flask import jsonify, request
-from db.db import *
-from bson import json_util, ObjectId
-import json
 from marshmallow import Schema, fields, ValidationError
 
 
@@ -37,32 +30,3 @@ class BaseSchema(Schema):
     slp  = fields.Integer(required=True)
     caa  = fields.Integer(required=True)
     thall  = fields.Integer(required=True)
-
-class ApiIsAlive(Resource):
-    def get(self):
-        return jsonify({'alive' : True})
-    
-    
-class AtrialFibrillationApi(Resource):
-    
-    def post(self):
-        patient_data  = request.get_json()
-        schema = BaseSchema()
-        try:
-            result = schema.load(patient_data)
-        except ValidationError as err:
-             return jsonify(err.messages), 400
-        
-        return jsonify(result)
-    
-    def get(self):
-        ecg = []
-        col = DB['ecg']
-        count = 0
-        for e in col.find({}):
-            ecg.append(e)
-            count += 1
-            if count == 50:
-                break
-        ecg_data = json.loads(json_util.dumps(ecg))
-        return jsonify(ecg_data)

@@ -9,6 +9,7 @@ api = Api(app)
 
 api.add_resource(ApiIsAlive, '/api/v1/health')
 api.add_resource(AtrialFibrillationApi, '/api/v1/ecg_data')
+
 if __name__ == '__main__':
     InitDB()
     app.run(debug=True)
