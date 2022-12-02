@@ -2,10 +2,9 @@
 import pymongo
 from pymongo import MongoClient
 
-client = MongoClient("mongodb://localhost:27017/afib_db")
-DB = client["afib_db"]
+client = pymongo.MongoClient("mongodb+srv://admin:euQ7nDEBuGhdhdJ@atrialfibrillationclust.zmhheka.mongodb.net/?retryWrites=true&w=majority")
+
+DB = client["AtrialFibrillationDB"]
 
 def InitDB():
     print("db initialization")
-    col = DB['test_colection']
-    col.insert_one({"name": "test_colection"})

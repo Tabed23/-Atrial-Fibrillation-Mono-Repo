@@ -1,8 +1,10 @@
 #/// API calling function
  
 from flask_restful import Resource, Api
-from flask import jsonify
+from flask import jsonify, request
 from db.db import *
+from bson import json_util, ObjectId
+import json
 
 class ApiIsAlive(Resource):
     def get(self):
@@ -12,11 +14,17 @@ class ApiIsAlive(Resource):
 class AtrialFibrillationApi(Resource):
     
     def post(self):
-        pass
+        ecg_data = request.get_json()
+        print(ecg_data)
     
     def get(self):
         ecg = []
         col = DB['ecg']
-        for e in col.find_one({}):
+        count = 0
+        for e in col.find({}):
             ecg.append(e)
-        return jsonify({'ecg' : ecg})
+            count += 1
+            if count == 50:
+                break
+        ecg_data = json.loads(json_util.dumps(ecg))
+        return jsonify(ecg_data)
