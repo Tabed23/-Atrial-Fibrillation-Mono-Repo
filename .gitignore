@@ -22,3 +22,5 @@ ecgeq-500hzsrfava.npy
 .vscode
 fyp-data.zip
 ecg-data.csv
+
+__pycache__
