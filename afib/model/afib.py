@@ -4,11 +4,8 @@ import pandas as pd
 class Afib:
 
     def __init__(self, *args, **kwargs):
-        self.df = pd.read_csv('coorteeqsrafva.csv', sep=';', header=0, index_col=0)
-        pd.options.display.max_columns = None
-        self.afib_df= None
-    
+        pass
 
-class 1dconv:
-    afib.isperson
-    heart attack chances 
+class Ecg():
+    def __init__(self, *args, **kwargs):
+        pass

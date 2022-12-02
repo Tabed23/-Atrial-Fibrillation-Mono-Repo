@@ -1,12 +1,14 @@
-from model.afib import Afib
 from flask import Flask, request, Response, jsonify
-from pymongo import MongoClient
-
-client = MongoClient('localhost', 27017)
+from flask_restful import Api
+from db.db import *
+from server.server import ApiIsAlive
 
 app = Flask(__name__)
+api = Api(app)
 
-# swagger API
 
-a = Afib()
-a.formate_data()
+api.add_resource(ApiIsAlive, '/api/v1/health')
+
+if __name__ == '__main__':
+    InitDB()
+    app.run(debug=True)
