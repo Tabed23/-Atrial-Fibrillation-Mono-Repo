@@ -1,17 +1,27 @@
 #/// API calling function
- 
 from flask_restful import Resource, Api
 from flask import jsonify, request
 from db.db import *
 from bson import json_util, ObjectId
 import json
 from services.service import AtrialFibrillationServiceLayer
+from flask_apispec import marshal_with
+from flask_apispec.views import MethodResource
+from marshmallow import Schema, fields
 
-class ApiIsAlive(Resource):
+# Swagger Response Schema in UI
+class IsAliveResponseSchema(Schema):
+    message = fields.Bool(default=True)
+
+# API Health Check
+class ApiIsAlive(MethodResource, Resource):
+    @marshal_with(IsAliveResponseSchema)   
     def get(self):
         return jsonify({'alive' : True})
-    
-    
+
+
+
+# AFIB API
 class AtrialFibrillationApi(Resource):
     
     
