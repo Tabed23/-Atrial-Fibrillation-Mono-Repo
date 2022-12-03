@@ -12,7 +12,7 @@ api = Api(app)
 # Swagger plugin for docs
 app.config.update({
     'APISPEC_SPEC': APISpec(
-        title='Awesome Project',
+        title='Atrial Fibrillation Detection API',
         version='v1',
         plugins=[MarshmallowPlugin()],
         openapi_version='2.0.0'
@@ -28,6 +28,7 @@ api.add_resource(ApiIsAlive, '/health')
 docs.register(ApiIsAlive)
 
 api.add_resource(AtrialFibrillationApi, '/api/v1/ecg_data')
+docs.register(AtrialFibrillationApi)
 
 if __name__ == '__main__':
     InitDB()

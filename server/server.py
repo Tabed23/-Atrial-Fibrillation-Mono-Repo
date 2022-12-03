@@ -5,26 +5,25 @@ from db.db import *
 from bson import json_util, ObjectId
 import json
 from services.service import AtrialFibrillationServiceLayer
-from flask_apispec import marshal_with
+from flask_apispec import marshal_with, use_kwargs, doc
 from flask_apispec.views import MethodResource
-from marshmallow import Schema, fields
+from server.schema.swagger_schema import IsAliveResponseSchema, AtrialFibrillationRequestSchema ,AtrialFibrillationResponseSchema, AtrialFibrillationEcgResponseSchema
 
-# Swagger Response Schema in UI
-class IsAliveResponseSchema(Schema):
-    message = fields.Bool(default=True)
 
 # API Health Check
 class ApiIsAlive(MethodResource, Resource):
+        
+    @doc(description='Atrial Fibrillation API.', tags=['Health Check'])
     @marshal_with(IsAliveResponseSchema)   
     def get(self):
         return jsonify({'alive' : True})
 
-
-
-# AFIB API
-class AtrialFibrillationApi(Resource):
+# Atrial Fibrillation API implementation
+class AtrialFibrillationApi(MethodResource,Resource):
     
-    
+    @doc(description='Atrial Fibrillation API.', tags=['AFIB Detection Request'])
+    @use_kwargs(AtrialFibrillationRequestSchema, location=('json'))
+    @marshal_with(AtrialFibrillationResponseSchema)
     def post(self):
         
         patient_data  = request.get_json() ## get the json data
@@ -37,6 +36,8 @@ class AtrialFibrillationApi(Resource):
         
         return jsonify({"schema": patient_req, "status": 200})
     
+    @doc(description='Atrial Fibrillation API.', tags=['ECG Get Data Request'])
+    @marshal_with(AtrialFibrillationEcgResponseSchema)
     def get(self):
         ecg = []
         col = DB['EcgCollection']
