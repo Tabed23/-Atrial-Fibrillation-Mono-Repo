@@ -1,7 +1,3 @@
-# angina-detection-using-afib
+# Atrial Fibrillation
 
-![cover_photo](./readmeimages/AFib-Animation.gif)
-
-```
-pip install -r requirements.txt
-```
+![afib-compared-original.gif](./images/afib-compared-original.gif)
