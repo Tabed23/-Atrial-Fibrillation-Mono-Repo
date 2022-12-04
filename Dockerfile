@@ -1,10 +1,21 @@
-FROM python:3.8-slim-buster
+FROM ubuntu:latest as base
 
-WORKDIR /atrialfibrillation
+RUN apt-get update
+RUN apt-get install -y python3.9 
+RUN apt-get install -y python3-pip
 
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
+RUN mkdir /atrialfibrillation/
+WORKDIR /atrialfibrillation/
 
+# Copy our script into the container
 COPY . .
 
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+
+# Install our Python dependencies
+RUN pip install -r requirements.txt
+
+EXPOSE 5000
+
+ENTRYPOINT [ "python3" ]
+
+CMD [ "main.py" ]
