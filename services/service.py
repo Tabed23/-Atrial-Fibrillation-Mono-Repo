@@ -25,3 +25,4 @@ class AtrialFibrillationServiceLayer:
             return res.inserted_id
         except ValidationError as err:
             return "cannot insert patient schema"
+        # call the collection from databae
