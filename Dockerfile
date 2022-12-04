@@ -15,14 +15,9 @@ RUN pip install -r requirements.txt
 # Copy our script into the container
 COPY . /atrialfibrillation/
 
-FROM python:3.9.6-alpine3.13 
+FROM python:3.9 
 WORKDIR /af
-COPY --from=base /atrialfibrillation/requirements.txt /af/
-COPY --from=base /atrialfibrillation/db  /af/
-COPY --from=base /atrialfibrillation/model /af/
-COPY --from=base /atrialfibrillation/server /af/
-COPY --from=base /atrialfibrillation/services /af/
-COPY --from=base /atrialfibrillation/main.py /af/
+COPY --from=base /atrialfibrillation/ /af/
 
 EXPOSE 5000
 
