@@ -6,11 +6,13 @@ RUN apt-get install -y python3-pip
 
 RUN mkdir /atrialfibrillation/
 WORKDIR /atrialfibrillation/
-# Install our Python dependencies
-RUN pip install -r requirements.txt
 
 # Copy our script into the container
-COPY ["main.py", "db", "model", "server", "services", "./"]
+COPY . .
+
+
+# Install our Python dependencies
+RUN pip install -r requirements.txt
 
 EXPOSE 5000
 
