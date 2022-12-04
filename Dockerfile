@@ -8,7 +8,7 @@ RUN mkdir /atrialfibrillation/
 WORKDIR /atrialfibrillation/
 
 # Copy our script into the container
-COPY . .
+COPY ["main.py", "db", "model", "server", "services", "./"]
 
 
 # Install our Python dependencies
