@@ -27,9 +27,9 @@ docs = FlaskApiSpec(app)
 api.add_resource(ApiIsAlive, '/health')
 docs.register(ApiIsAlive)
 
-api.add_resource(AtrialFibrillationApi, '/api/v1/ecg_data')
+api.add_resource(AtrialFibrillationApi, '/api/v1/predict_result')
 docs.register(AtrialFibrillationApi)
 
 if __name__ == '__main__':
     InitDB()
-    app.run(debug=True)
+    app.run(port=5000, debug=True)
