@@ -13,7 +13,7 @@ warnings.filterwarnings('ignore')
 class AtrialFibrillationServiceLayer:
     def __init__(self):
         self.col_AF = DB['AtrialFibrillationCollection']
-        self.col_Person = DB['Person']
+        self.col_Person = DB['PersonCollection']
         self.inter_section_columns = ['V6','III','age','V2','V5','V4','weight','I','sex','II','V3','V1','aVR','height','ritmi','aVF','aVL']
     
     def Create_Schema(self, patient_schema):
