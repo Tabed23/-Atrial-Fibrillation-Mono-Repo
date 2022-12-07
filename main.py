@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, '/home/tabeedhassan/go/src/FYP/angina-detection-using-afib/')
 from flask import Flask, request, Response, jsonify
 from flask_restful import Api
 from db.db import *
@@ -32,4 +34,4 @@ docs.register(AtrialFibrillationApi)
 
 if __name__ == '__main__':
     InitDB()
-    app.run(port=5000, debug=True)
+    app.run(host = 'localhost',port='5001',debug = True)

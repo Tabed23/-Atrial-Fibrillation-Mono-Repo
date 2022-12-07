@@ -4,6 +4,7 @@ from flask import jsonify, request
 from db.db import *
 from bson import json_util, ObjectId
 import json
+from ast import literal_eval
 from services.service import AtrialFibrillationServiceLayer
 from flask_apispec import marshal_with, use_kwargs, doc
 from flask_apispec.views import MethodResource
@@ -26,7 +27,8 @@ class AtrialFibrillationApi(MethodResource,Resource):
     @marshal_with(AtrialFibrillationResponseSchema)
     def post(self):
         print("heloo initialization")
-        patient_data  = request.data ## get the json data
+        patient_req  = request.data ## get the json data
+        patient_data = literal_eval(patient_req.decode('utf-8'))
         print(patient_data)
         srv = AtrialFibrillationServiceLayer() # initialization the service layer
         
@@ -38,18 +40,3 @@ class AtrialFibrillationApi(MethodResource,Resource):
         return jsonify({"predicted result":json.loads(json_util.dumps(predict_result)) , "status": 200})
     
     
-    
-    
-    @doc(description='Atrial Fibrillation API.', tags=['ECG Get Data Request'])
-    @marshal_with(AtrialFibrillationEcgResponseSchema)
-    def get(self):
-        ecg = []
-        col = DB['EcgCollection']
-        count = 0
-        for e in col.find({}):
-            ecg.append(e)
-            count += 1
-            if count == 100:
-                break
-        ecg_data = json.loads(json_util.dumps(ecg))
-        return jsonify(ecg_data)

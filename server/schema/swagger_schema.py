@@ -8,12 +8,11 @@ class IsAliveResponseSchema(Schema):
 
     
 class AtrialFibrillationResponseSchema(Schema):
-    afib_percent = fields.Float(default=0.0)
-
+    afib_percent = fields.String()
 
 class AtrialFibrillationRequestSchema(Schema):
     age       = fields.Integer(default=None)
-    sex       = fields.String(default=None)
+    sex       = fields.Float()
     height    = fields.Float(default=None)
     weight    = fields.Float(default=None)
     ritmi     = fields.Integer(default=None)
