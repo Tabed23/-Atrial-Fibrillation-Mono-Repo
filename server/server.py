@@ -4,6 +4,7 @@ from flask import jsonify, request
 from db.db import *
 from bson import json_util, ObjectId
 import json
+from ast import literal_eval
 from services.service import AtrialFibrillationServiceLayer
 from flask_apispec import marshal_with, use_kwargs, doc
 from flask_apispec.views import MethodResource
