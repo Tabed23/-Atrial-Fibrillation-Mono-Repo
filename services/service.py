@@ -39,7 +39,7 @@ class AtrialFibrillationServiceLayer:
         y_test = test_df['ritmi']
         
         # load model
-        modelfile = open(rf'weights\{str(len(self.inter_section_columns))}_feature_random_model.pkl','rb')
+        modelfile = open(rf'weights/17_feature_random_model.pkl','rb')
         model = pickle.load(modelfile)
         
         # do inference

@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.insert(0,os.getcwd())
 from flask import Flask, request, Response, jsonify
 from flask_restful import Api
 from db.db import *
@@ -26,7 +29,7 @@ docs = FlaskApiSpec(app)
 api.add_resource(ApiIsAlive, '/health')
 docs.register(ApiIsAlive)
 
-api.add_resource(AtrialFibrillationApi, '/api/v1/predict_result')
+api.add_resource(AtrialFibrillationApi, '/predict_result')
 docs.register(AtrialFibrillationApi)
 
 if __name__ == '__main__':

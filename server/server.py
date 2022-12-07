@@ -8,9 +8,8 @@ from ast import literal_eval
 from services.service import AtrialFibrillationServiceLayer
 from flask_apispec import marshal_with, use_kwargs, doc
 from flask_apispec.views import MethodResource
-from server.schema.swagger_schema import IsAliveResponseSchema, AtrialFibrillationRequestSchema ,AtrialFibrillationResponseSchema, AtrialFibrillationEcgResponseSchema
 from ast import literal_eval
-
+from schema.swagger_schema import IsAliveResponseSchema, AtrialFibrillationRequestSchema, AtrialFibrillationResponseSchema
 # API Health Check
 class ApiIsAlive(MethodResource, Resource):
         
@@ -23,9 +22,9 @@ class ApiIsAlive(MethodResource, Resource):
 class AtrialFibrillationApi(MethodResource,Resource):
     
     @doc(description='Atrial Fibrillation API.', tags=['AFIB Detection Request'])
-    @use_kwargs(AtrialFibrillationRequestSchema, location=('json'))
+    @use_kwargs(AtrialFibrillationRequestSchema)
     @marshal_with(AtrialFibrillationResponseSchema)
-    def post(self):
+    def post(self, **kwargs):
         data = request.data
         patient_data = literal_eval(data.decode('utf-8'))
         srv = AtrialFibrillationServiceLayer() # initialization the service layer
@@ -34,19 +33,4 @@ class AtrialFibrillationApi(MethodResource,Resource):
 
         # get prediction result
         out_dict = srv.Get_Prediction(patient_req)
-        return jsonify(out_dict)
-    
-    @doc(description='Atrial Fibrillation API.', tags=['ECG Get Data Request'])
-    @marshal_with(AtrialFibrillationEcgResponseSchema)
-    def get(self):
-        ecg = []
-        col = DB['EcgCollection']
-        count = 0
-        for e in col.find({}):
-            ecg.append(e)
-            count += 1
-            if count == 100:
-                break
-        ecg_data = json.loads(json_util.dumps(ecg))
-        return jsonify(ecg_data)
-        
+        return jsonify({'prediction': out_dict, "status": "success" , "status_code":200})
