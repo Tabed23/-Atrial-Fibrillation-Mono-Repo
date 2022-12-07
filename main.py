@@ -23,7 +23,6 @@ app.config.update({
 
 docs = FlaskApiSpec(app)
 
-
 api.add_resource(ApiIsAlive, '/health')
 docs.register(ApiIsAlive)
 
@@ -33,3 +32,4 @@ docs.register(AtrialFibrillationApi)
 if __name__ == '__main__':
     InitDB()
     app.run(port=5000, debug=True)
+    

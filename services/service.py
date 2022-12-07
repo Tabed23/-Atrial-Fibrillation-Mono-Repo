@@ -1,8 +1,8 @@
 ## /// buiness logic 
-
+from marshmallow import ValidationError
 ## data processing
 from db.db import *
-from services.validate_scheema import BaseSchema
+from services.validate_schema import BaseSchema
 import json
 import pandas as pd
 import pickle
@@ -24,7 +24,7 @@ class AtrialFibrillationServiceLayer:
              return json.dumps(err.messages)
          
         try:
-            res = self.col.insert_one(patient_schema)
+            res = self.col_AF.insert_one(patient_schema)
             return res.inserted_id
         except ValidationError as err:
             return "cannot insert patient schema"
@@ -32,17 +32,17 @@ class AtrialFibrillationServiceLayer:
     
     def Get_Prediction(self, patient_schema):
         
-        sub_test_data = {column: test_data[column] for column in self.inter_section_columns}
+        sub_test_data = {column: patient_schema[column] for column in self.inter_section_columns}
         test_df = pd.DataFrame(sub_test_data,index=[0])
         test_df['sex'] = test_df['sex'].apply(lambda x : 0 if x=='male' else 1)
         X_test = test_df.drop(columns='ritmi')
         y_test = test_df['ritmi']
         
-          # load model
-        modelfile = open(rf'weights\{str(len(inter_section_columns))}_feature_random_model.pkl','rb')
+        # load model
+        modelfile = open(rf'weights\{str(len(self.inter_section_columns))}_feature_random_model.pkl','rb')
         model = pickle.load(modelfile)
         
-             # do inference
+        # do inference
         y_pred_prob = list(model.predict_proba(X_test)[0])
 
         prediction_string=f'{round(y_pred_prob[0],2)*100}% Normal (SR), {round(y_pred_prob[1],2)*100}% Atrial Fibrillation (AF), {round(y_pred_prob[2],2)*100}% All other arrhythmia (VA)'
@@ -51,3 +51,4 @@ class AtrialFibrillationServiceLayer:
             return prediction_string
         except Exception as e:
             return {'model_prediction':None}
+            
