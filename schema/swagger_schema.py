@@ -53,3 +53,10 @@ class AtrialFibrillationRequestPutSchema(Schema):
 
 class AtrialFibrillationResponsePutSchema(Schema):
     is_updated = fields.Bool(default=False)
+
+
+
+class AtrialFibrillationDeleteRequestSchema(Schema):
+    name = fields.String(default='')
+class AtrialFibrillationDeleteResponseSchema(Schema):
+    is_deleted = fields.Bool(default=False)
