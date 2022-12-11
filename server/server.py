@@ -50,7 +50,8 @@ class AtrialFibrillationPutApi(MethodResource,Resource):
         data = request.data
         patient_data = literal_eval(data.decode('utf-8'))
         patient_req = json.loads(json_util.dumps(patient_data)) #Serialize the schema
-        res = self.srv.Update_Record(patient_schema)
+        is_updated = res = self.srv.Update_Record(patient_req)
+        return jsonify({"status": 201, "isUpdated": is_updated})
 
 class AtrialFibrillationDeleteApi(MethodResource,Resource):
      def __init__(self):

@@ -3,6 +3,7 @@ from db.db import *
 from services.validate_schema import BaseSchema
 import json
 import pandas as pd
+from bson import ObjectId
 import pickle
 from sklearn.metrics import classification_report
 import warnings
@@ -61,7 +62,27 @@ class AtrialFibrillationServiceLayer:
             return {'model_prediction':None}
 
     def Update_Record(self, patient_schema):
-        pass
+        res_af =self.col_AF.find_one({}, {"name": patient_schema['name']})
+        res_pa =self.col_Person.find_one({}, {"name": patient_schema['name']})
+        print(res_af.get("_id"), res_pa.values())
+        new_values_af =  { "height":patient_schema['height'],
+                              "weight":patient_schema['weight'], "ritmi": patient_schema['ritmi'],
+                              "aVF":patient_schema["aVF"], "aVL": patient_schema['aVL'],
+                              "aVR":patient_schema['aVR'], "I": patient_schema['I'], "II": patient_schema['II'],
+                              "III": patient_schema['III'], "V1": patient_schema['V1'],
+                              "V2":patient_schema['V2'], "V3": patient_schema['V3'],"V4": patient_schema['V4'],
+                              "V5":patient_schema['V5'], "V6": patient_schema['V6']}
+
+        new_values_per =  {"height":patient_schema['height'],
+                            "weight":patient_schema['weight']}
+        try:
+            print()
+            self.col_AF.update_one({"_id":res_af.get('_id')}, {"$set": new_values_af})
+            self.col_Person.update_one({"_id":res_pa.get('_id')},  {"$set": new_values_per})
+            return True
+        except ValidationError as err:
+            print(err)
+            return False
 
     def Delete_Record(self):
         pass
