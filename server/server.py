@@ -19,27 +19,43 @@ class ApiIsAlive(MethodResource, Resource):
         return jsonify({'alive' : True})
 
 # Atrial Fibrillation API implementation
-class AtrialFibrillationApi(MethodResource,Resource):
+class AtrialFibrillationPredictApi(MethodResource,Resource):
+    def __init__(self):
+        self.srv = AtrialFibrillationServiceLayer() # initialization the service layer
 
-    @doc(description='Atrial Fibrillation API.', tags=['AFIB Detection Request'])
+    @doc(description='Atrial Fibrillation API.', tags=['AFIB Prediction Request'])
     @use_kwargs(AtrialFibrillationRequestSchema)
     @marshal_with(AtrialFibrillationResponseSchema)
     def post(self, **kwargs):
         data = request.data
         patient_data = literal_eval(data.decode('utf-8'))
-        srv = AtrialFibrillationServiceLayer() # initialization the service layer
-        res = srv.Create_Schema(patient_data) # create the schema
+
+        res = self.srv.Create_Schema(patient_data) # create the schema
         patient_req = json.loads(json_util.dumps(patient_data)) #Serialize the schema
 
         # get prediction result
-        out_dict = srv.Get_Prediction(patient_req)
-        return jsonify({'prediction': out_dict, "status": "success" , "status_code":200})
-    @doc(description='Atrial Fibrillation API.', tags=['AFIB Detection Request'])
-    def delete(self, **kwargs):
-        pass
+        out_dict = self.srv.Get_Prediction(patient_req)
+        return jsonify({'prediction': out_dict, "status": "success" , "status_code":200 , "status_message":res})
 
-    @doc(description='Atrial Fibrillation API.', tags=['AFIB Detection Request'])
-    @use_kwargs(AtrialFibrillationRequestPutSchema)
-    @marshal_with(AtrialFibrillationResponsePutSchema)
-    def put(self, **kwargs):
+
+
+class AtrialFibrillationPutApi(MethodResource,Resource):
+     def __init__(self):
+        self.srv = AtrialFibrillationServiceLayer() # initialization the service layer
+
+     @doc(description='Atrial Fibrillation API.', tags=['AFIB  Update Record'])
+     @use_kwargs(AtrialFibrillationRequestPutSchema)
+     @marshal_with(AtrialFibrillationResponsePutSchema)
+     def put(self, **kwargs):
+        data = request.data
+        patient_data = literal_eval(data.decode('utf-8'))
+        patient_req = json.loads(json_util.dumps(patient_data)) #Serialize the schema
+        res = self.srv.Update_Record(patient_schema)
+
+class AtrialFibrillationDeleteApi(MethodResource,Resource):
+     def __init__(self):
+        self.srv = AtrialFibrillationServiceLayer() # initialization the service layer
+
+     @doc(description='Atrial Fibrillation API.', tags=['AFIB  Delete Record'])
+     def delete(self, **kwargs):
         pass

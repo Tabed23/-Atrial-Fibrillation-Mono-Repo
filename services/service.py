@@ -1,6 +1,4 @@
-## /// buiness logic
 from marshmallow import ValidationError
-## data processing
 from db.db import *
 from services.validate_schema import BaseSchema
 import json
@@ -12,10 +10,13 @@ warnings.filterwarnings('ignore')
 
 class AtrialFibrillationServiceLayer:
     def __init__(self):
+        # collection we are using
         self.col_AF = DB['AtrialFibrillationCollection']
         self.col_Person = DB['PersonCollection']
+        # database column we need
         self.inter_section_columns = ['V6','III','age','V2','V5','V4','weight','I','sex','II','V3','V1','aVR','height','ritmi','aVF','aVL']
         self.person_columns = ["name", "age", "height", "weight", "sex"]
+
     def Create_Schema(self, patient_schema):
         schema = BaseSchema()
         try:
@@ -59,8 +60,8 @@ class AtrialFibrillationServiceLayer:
         except Exception as e:
             return {'model_prediction':None}
 
-    def UpdateRecord(self):
+    def Update_Record(self, patient_schema):
         pass
 
-    def DeleteRecord(self):
+    def Delete_Record(self):
         pass
