@@ -40,4 +40,4 @@ docs.register(AtrialFibrillationDeleteApi)
 
 if __name__ == '__main__':
     InitDB()
-    app.run(port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
