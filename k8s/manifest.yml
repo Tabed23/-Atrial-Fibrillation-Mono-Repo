@@ -1,62 +1,59 @@
-apiVersion: extensions/v1beta1
+---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  af-api
+  name: af-api-deploy
   labels:
-    name:  af-api
+    app: af-api-app
+    test: test
 spec:
+  selector:
+    matchLabels:
+      app: af-api-app
+  replicas: 2
   strategy:
+    type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
-      maxUnavailable: 1
-    type: RollingUpdate
+      maxUnavailable: 0
   template:
     metadata:
       labels:
-        name:   af-api
+        app: af-api-app
     spec:
       containers:
-      - image:  tabed23/atrial-fibrillation:latest
-        name:   af-api
+      - name: af-api-app
+        image: tabed23/atrial-fibrillation:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+           httpGet:
+             path: /health
+             port: 5000
+           initialDelaySeconds: 3
+           periodSeconds: 3
         resources:
           requests:
-            cpu: "20m"
-            memory: "55M"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 5000
-          initialDelaySeconds: 90
-          timeoutSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 5000
-          initialDelaySeconds: 30
-          timeoutSeconds: 10
-        ports:
-        - containerPort:  5000
-          name:  my-name
-        volumeMounts:
-        - mountPath: /data
-          name: data
-      volumes:
-        - name: data
-          emptyDir: {}
-      restartPolicy: Always
-      imagePullPolicy: Always
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+      tolerations:
+      - key: "cattle.io/os"
+        value: "linux"
+        effect: "NoSchedule"
+
 ---
-
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: Atrial-Fibrillation
+  name: af-api-deploy
 spec:
   selector:
     app: af-api
-  type:  NodePort
   ports:
-  - name:  name-of-the-port
-    port:  80
-    targetPort:  5000
+  - port: 5000
+    targetPort: 5000
+
