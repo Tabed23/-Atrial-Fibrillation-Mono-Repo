@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields, ValidationError
 
 class BaseSchema(Schema):
-    name = fields.Str(default='')
+    name = fields.Str(default='test')
     age = fields.Float(default=10)
     sex = fields.Float(default=None)
     height =  fields.Float(default=None)
@@ -19,3 +19,4 @@ class BaseSchema(Schema):
     V4   =  fields.Float(default=None)
     V5  =  fields.Float(default=None)
     V6  =  fields.Float(default=None)
+
