@@ -39,6 +39,7 @@ class AtrialFibrillationPredictApi(MethodResource,Resource):
 
 
 
+
 class AtrialFibrillationPutApi(MethodResource,Resource):
      def __init__(self):
         self.srv = AtrialFibrillationServiceLayer() # initialization the service layer
